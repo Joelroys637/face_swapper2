@@ -1,7 +1,7 @@
+opencv-python
 dlib-19.22.99-cp39-cp39-win_amd64.whl
 cmake
 dlib
 imutils
 face_utils
-opencv-python
 streamlit
