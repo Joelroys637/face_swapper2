@@ -1,6 +1,6 @@
-cmake==3.31.2
-dlib==19.24.6
-numpy==1.23.5
+dlib-19.22.99-cp39-cp39-win_amd64.whl
+cmake
+dlib
 opencv-python-headless
 imutils
 streamlit
