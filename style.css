@@ -392,12 +392,12 @@ body {
 
 .chat-input-area {
     padding: 10px 16px;
-    padding-bottom: 3cm;
-    /* Lift text box 3cm up */
     background: var(--secondary-bg);
     display: flex;
     align-items: center;
     gap: 15px;
+    border-bottom: 1px solid #d1d7db;
+    /* visual separation */
 }
 
 #message-input {
@@ -486,7 +486,6 @@ body {
         padding: 10px;
         background: var(--secondary-bg);
         /* Remove sticky, rely on Flexbox structure */
-        padding-bottom: env(safe-area-inset-bottom);
-        /* Handle iPhone Home Bar */
+        padding-bottom: 10px;
     }
 }
