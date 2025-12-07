@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 </head>
+
 <body>
 
     <!-- Authentication View -->
@@ -29,7 +31,7 @@
                     <button class="tab-btn active" onclick="switchAuthTab('login')">Login</button>
                     <button class="tab-btn" onclick="switchAuthTab('signup')">Sign Up</button>
                 </div>
-                
+
                 <form id="login-form" class="auth-form active">
                     <input type="email" id="login-email" placeholder="Email Address" required>
                     <input type="password" id="login-password" placeholder="Password" required>
@@ -130,4 +132,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

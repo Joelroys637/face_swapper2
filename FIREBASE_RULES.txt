@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow anyone who is logged in to read and write messages
+    match /groups/{groupId}/messages/{messageId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow creating/reading group metadata (if we were using it, but we strictly use subcollections)
+    match /groups/{groupId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+
+// FOR STORAGE (Images)
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

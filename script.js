@@ -19,11 +19,6 @@ try {
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-// We will use Firestore for "tables" (collections) as requested.
-// Each group will be a collection OR a document with a subcollection.
-// For simplicity and "table name" analogy: we'll treat the group name as a Collection ID or a Document ID in a 'groups' collection. 
-// A better approach for "dynamic table name": 
-// We will store messages in a collection named `messages_{groupName}` or similar to mimic "table per group" or just use a root collection `groups/{groupName}/messages`.
 const storage = firebase.storage();
 
 // State
@@ -149,13 +144,8 @@ async function handleGroupAction() {
     const groupId = groupName.toLowerCase().replace(/\s+/g, '_');
 
     if (currentGroupAction === 'create') {
-        // In a real app we might check if it exists first, but here we just "open" it.
-        // We can create a metadata doc if we want, or just start writing messages.
-        // Let's check existence for better UX if it was strict 'create', 
-        // but for this MVP, creating just means defining the collection.
         await enterGroup(groupName, groupId);
     } else {
-        // Join
         await enterGroup(groupName, groupId);
     }
 
@@ -186,9 +176,9 @@ function loadMessages(groupId) {
     const messagesList = document.getElementById('messages-list');
     messagesList.innerHTML = ''; // Clear old
 
-    // Listen to the "messages" subcollection of the group
     const messagesRef = db.collection('groups').doc(groupId).collection('messages');
 
+    // Attempt to load messages with sorting
     messagesUnsubscribe = messagesRef
         .orderBy('timestamp', 'asc')
         .onSnapshot((snapshot) => {
@@ -201,9 +191,12 @@ function loadMessages(groupId) {
             messagesList.scrollTop = messagesList.scrollHeight;
         }, (error) => {
             console.error("Firestore Error:", error);
-            // If the query requires an index, Firestore will throw an error with a link in the console.
-            if (error.message.includes('index')) {
-                alert("This query requires a Firestore Index. Open the browser console (F12) and click the link provided by Firebase.");
+
+            // Helpful alerts for User
+            if (error.code === 'permission-denied') {
+                alert("Permission Denied: Check FIREBASE_RULES.txt for help.");
+            } else if (error.message.includes('index')) {
+                alert("Firestore Index Required: Open Console (F12) and click the link from Firebase.");
             } else {
                 alert("Error loading chats: " + error.message);
             }
@@ -270,6 +263,7 @@ async function sendMessage() {
             senderName: currentUser.displayName || currentUser.email,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
+        console.log("Message Sent Successfully"); // Debug
 
     } catch (error) {
         console.error("Error sending message:", error);
